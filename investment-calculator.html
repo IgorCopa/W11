@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Investment Calculator</title>
+    <style>
+        .input{
+            margin-left: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Investment Calculator</h1>
+    <form class="titles">
+        <label class="title">Amount invested</label> <input type="text" class="input principal" placeholder="principal"><br>
+        <label class="title">Annual rate</label> <input type="text" class="input rate" placeholder="example: .08"><br>
+        <label class="title">Number of years</label> <input type="text" class="input years" placeholder="example: 2"><br>
+        <label class="title">Periods</label> <input type="text" class="input periods" placeholder="per year"><br>
+        <button class="title btn" type="button" onclick="doFV()">Compute future value</button> <div class="future-value"></div>
+    </form>
+
+    <script>
+
+        function doFV(){
+            let a = parseFloat(document.querySelector('.principal').value);
+            let years = parseFloat(document.querySelector('.years').value);
+            let periods = parseInt(document.querySelector('.periods').value);
+            let r = parseFloat(document.querySelector('.rate').value)/periods;
+            let f = computeFutureValue(a, r, years, periods);
+            document.querySelector('.future-value').innerHTML = '$' + f;
+        }
+
+        function computeFutureValue(principal, annualRate, years, periodsPerYear){
+            let n = periodsPerYear * years;
+            let calc = Math.pow(1 + annualRate, n);
+            return (principal * calc).toFixed(2);
+        }
+    
+    </script>
+    
+</body>
+</html>

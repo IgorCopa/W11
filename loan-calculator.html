@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Loan Calculator</title>
+</head>
+<body>
+
+    <h1>Loan Calculator</h1>
+    <form class="titles">
+        <label class="title">Amount borrowed</label> <input type="text" class="input principal" placeholder="principal"><br>
+        <label class="title">Annual interest rate</label> <input type="text" class="input rate" placeholder="example: .65"><br>
+        <label class="title">Number of years</label> <input type="text" class="input years" placeholder="example: 30"><br>
+        <label class="title">Payments</label> <input type="text" class="input payment" placeholder="per year"><br>
+        <button class="title btn-payment" type="button" onclick="doPayment()">Compute payment</button> <div class="paymentOutput"></div><br>
+        <label class="title">Number of payments paid to date</label> <input type="text" class="input payments-number" placeholder="so far"><br>
+        <button class="title btn-payoff-amount" type="button" onclick="doBalance()">Compute payoff amount</button> <div class="payoffAmountOutput"></div><br>
+    </form>
+
+    <script>
+        let p;
+        function doPayment(){
+            let a = parseFloat(document.querySelector('.principal').value);
+            let annualRate = parseFloat(document.querySelector('.rate').value);
+            let paymentPerYear = parseInt(document.querySelector('.payment').value);
+            let years = parseFloat(document.querySelector('.years').value);
+            p = computePayment(a, annualRate, years, paymentPerYear);
+            document.querySelector('.paymentOutput').innerHTML = '$' + p;
+        }
+
+        function computePayment(principal, annualRate, years, periodsPerYear){
+            let r = annualRate/periodsPerYear;
+            let n = periodsPerYear * years;
+            let calc = Math.pow(1 + r, -n);
+            let paymentPeriod = (principal * r) / (1 - calc);
+            return paymentPeriod.toFixed(2);
+        }
+
+
+
+        function doBalance(){
+            let a = parseFloat(document.querySelector('.principal').value);
+            let annualRate = parseFloat(document.querySelector('.rate').value);
+            let paymentPerYear = parseInt(document.querySelector('.payment').value);
+            let years = parseFloat(document.querySelector('.years').value);
+            let d = parseInt(document.querySelector('.payments-number').value);
+            let b = computeBalance(a, annualRate, years, paymentPerYear, d);
+            document.querySelector('.payoffAmountOutput').innerHTML = '$' + b;
+        }
+
+        function computeBalance(principal, annualRate, years, periodsPerYear, numberOfPaymentPaidToDate){
+            let r = annualRate/periodsPerYear;
+            let balance = principal * (Math.pow(1 + r, numberOfPaymentPaidToDate)) - (p * (Math.pow(1 + r, numberOfPaymentPaidToDate) - 1) / r);
+            return balance.toFixed(2);
+        }
+    </script>
+    
+</body>
+</html>
